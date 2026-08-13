@@ -1,10 +1,16 @@
+import Typography from '@mui/material/Typography'
+
 const appName ="TaskFlow"
 
 function Header(){
     return(
         <header className="app-header">
-            <h1>{appName}</h1>
+            <Typography variant ="h4">
+                {appName}
+            </Typography>
+            <Typography variant ="body1">
             <p>Manage your task easily.</p>
+            </Typography>
             </header>
        
     )
