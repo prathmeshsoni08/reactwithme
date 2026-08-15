@@ -1,77 +1,54 @@
 import React, { useState } from "react";
-import Box from "@mui/material/Box";
-import Stack from "@mui/material/Stack";
-import Button from "@mui/material/Button";
-import Typography from "@mui/material/Typography";
-import Container from "@mui/material/Container";
-
-import Navbar from "./components/Navbar";
-import Sidebar from "./components/Sidebar";
-import MobileDrawer from "./components/MobileDrawer";
+import { Routes, Route, Navigate } from "react-router-dom";
 
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import ForgotPassword from "./pages/ForgetPassword";
 
+import Dashboard from "./pages/Dashboard";
+import Tasks from "./pages/Tasks";
+import Profile from "./pages/Profile";
+import MainLayout from "./components/MainLayout";
+import Menu from "./pages/Menu";
+import Completed from "./pages/Completed";
 const App = () => {
-  const [openPage, setOpenPage] = useState("login");
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [drawerOpen, setDrawerOpen] = useState(false);
 
   const handleLogin = () => {
     setIsLoggedIn(true);
   };
 
-  const handleMenuClick = () => {
-    setDrawerOpen(true);
-  };
-
-  // Show authentication pages before login
-  if (!isLoggedIn) {
-    if (openPage === "login") {
-      return <Login handleClick={setOpenPage} onLogin={handleLogin} />;
-    }
-
-    if (openPage === "signup") {
-      return <Signup setOpenPage={setOpenPage} />;
-    }
-
-    if (openPage === "forgetps") {
-      return <ForgotPassword setOpenPage={setOpenPage} />;
-    }
-  }
-
-  // Show main application after successful login
   return (
-    <>
-      <Navbar onMenuClick={handleMenuClick} />
+    <Routes>
+      {/* Authentication */}
+      {!isLoggedIn && (
+        <>
+          <Route path="/login" element={<Login onLogin={handleLogin} />} />
 
-      <Box sx={{ display: "flex" }}>
-        <Sidebar />
+          <Route path="/signup" element={<Signup />} />
 
-        <Box sx={{ flex: 1 }}>
-          <Container sx={{ py: 3 }}>
-            <Typography variant="h5">Welcome to TaskFlow</Typography>
+          <Route path="/forgotPassword" element={<ForgotPassword />} />
+        </>
+      )}
 
-            <Typography variant="body1">
-              Your personal task management application.
-            </Typography>
+      {/* Main Application */}
+      {isLoggedIn && (
+        <Route element={<MainLayout />}>
+          <Route path="/dashboard" element={<Dashboard />} />
 
-            <Stack
-              direction={{ xs: "column", sm: "row" }}
-              spacing={2}
-              sx={{ mt: 2 }}
-            >
-              <Button variant="contained">Add Tasks</Button>
+          <Route path="/task" element={<Tasks />} />
 
-              <Button variant="outlined">View Tasks</Button>
-            </Stack>
-          </Container>
-        </Box>
-      </Box>
+          <Route path="/profile" element={<Profile />} />
+          <Route path="/menu" element={<Menu />} />
+          <Route path="/completed" element={<Completed />} />
 
-      <MobileDrawer open={drawerOpen} onClose={() => setDrawerOpen(false)} />
-    </>
+          <Route path="*" element={<Navigate to="/dashboard" replace />} />
+        </Route>
+      )}
+
+      {/* Default route */}
+      <Route path="*" element={<Navigate to="/login" replace />} />
+    </Routes>
   );
 };
 

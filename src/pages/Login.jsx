@@ -12,8 +12,9 @@ import InputAdornment from "@mui/material/InputAdornment";
 import IconButton from "@mui/material/IconButton";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
+import { Link } from "react-router-dom";
 
-function Login({ handleClick, onLogin }) {
+function Login({ onLogin }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -57,7 +58,7 @@ function Login({ handleClick, onLogin }) {
 
     // Hardcoded login credentials
     const correctEmail = "prathmeshsoni810@gmail.com";
-    const correctPassword = "12345@Ps";
+    const correctPassword = "123456";
 
     // Check credentials
     if (email === correctEmail && password === correctPassword) {
@@ -186,9 +187,17 @@ function Login({ handleClick, onLogin }) {
                   color: "#673ab7",
                   cursor: "pointer",
                 }}
-                onClick={() => handleClick("forgetps")}
               >
-                Forgot password?
+                <Link
+                  to="/forgotPassword"
+                  style={{
+                    color: "#673ab7",
+                    fontWeight: 600,
+                    textDecoration: "none",
+                  }}
+                >
+                  Forgot password?
+                </Link>
               </Typography>
             </Box>
 
@@ -241,9 +250,17 @@ function Login({ handleClick, onLogin }) {
                 cursor: "pointer",
                 fontWeight: 600,
               }}
-              onClick={() => handleClick("signup")}
             >
-              Sign up
+              <Link
+                to="/signup"
+                style={{
+                  color: "#673ab7",
+                  fontWeight: 600,
+                  textDecoration: "none",
+                }}
+              >
+                Sign up
+              </Link>
             </Box>
           </Typography>
         </CardContent>

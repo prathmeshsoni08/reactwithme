@@ -1,5 +1,6 @@
-import Box from '@mui/material/Box'
-import Typography from '@mui/material/Typography'
+import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
+import { Link } from "react-router-dom";
 
 function Sidebar() {
   return (
@@ -7,27 +8,70 @@ function Sidebar() {
       sx={{
         width: 220,
         padding: 2,
-        borderRight : '1px solid #ddd',
-        minHeight: 'calc(100vh -64px)',     
+        borderRight: "2px solid #ddd",
+        minHeight: "100vh",
       }}
     >
       <Typography variant="h6">
-        Menu
+        <Link
+          to="/menu"
+          style={{
+            fontWeight: 600,
+            textDecoration: "none",
+          }}
+        >
+          Menu
+        </Link>
+      </Typography>
+      <Typography>
+        <Link
+          to="/Profile"
+          style={{
+            fontWeight: 600,
+            textDecoration: "none",
+          }}
+        >
+          Profile
+        </Link>
       </Typography>
 
       <Typography>
-        Dashboard
+        <Link
+          to="/dashboard"
+          style={{
+            fontWeight: 600,
+            textDecoration: "none",
+          }}
+        >
+          Dashborad
+        </Link>
       </Typography>
 
       <Typography>
-        Tasks
+        <Link
+          to="/task"
+          style={{
+            fontWeight: 600,
+            textDecoration: "none",
+          }}
+        >
+          task
+        </Link>
       </Typography>
 
       <Typography>
-        Completed
+        <Link
+          to="/completed"
+          style={{
+            fontWeight: 600,
+            textDecoration: "none",
+          }}
+        >
+          Completed Tasks
+        </Link>
       </Typography>
     </Box>
-  )
+  );
 }
 
-export default Sidebar
+export default Sidebar;

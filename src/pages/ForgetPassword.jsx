@@ -4,8 +4,9 @@ import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
+import { Link } from "react-router-dom";
 
-function ForgotPassword({ setOpenPage }) {
+function ForgotPassword() {
   return (
     <Box
       sx={{
@@ -96,9 +97,17 @@ function ForgotPassword({ setOpenPage }) {
                 fontWeight: 600,
                 cursor: "pointer",
               }}
-              onClick={() => setOpenPage("login")}
             >
-              Back to login
+              <Link
+                to="/login"
+                style={{
+                  color: "#673ab7",
+                  fontWeight: 600,
+                  textDecoration: "none",
+                }}
+              >
+                Back to login
+              </Link>
             </Box>
           </Typography>
         </CardContent>

@@ -6,8 +6,9 @@ import Button from "@mui/material/Button";
 import Checkbox from "@mui/material/Checkbox";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Box from "@mui/material/Box";
+import { Link } from "react-router-dom";
 
-function SignUp({ setOpenPage }) {
+function SignUp() {
   return (
     <Box
       sx={{
@@ -159,9 +160,17 @@ function SignUp({ setOpenPage }) {
                 fontWeight: 600,
                 cursor: "pointer",
               }}
-              onClick={() => setOpenPage("login")}
             >
-              Login
+              <Link
+                to="/login"
+                style={{
+                  color: "#673ab7",
+                  fontWeight: 600,
+                  textDecoration: "none",
+                }}
+              >
+                Login
+              </Link>
             </Box>
           </Typography>
         </CardContent>
