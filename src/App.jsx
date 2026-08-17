@@ -1,122 +1,78 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import heroImg from './assets/hero.png'
-import './App.css'
+import React, { useState } from "react";
+import Box from "@mui/material/Box";
+import Stack from "@mui/material/Stack";
+import Button from "@mui/material/Button";
+import Typography from "@mui/material/Typography";
+import Container from "@mui/material/Container";
 
-function App() {
-  const [count, setCount] = useState(0)
+import Navbar from "./components/Navbar";
+import Sidebar from "./components/Sidebar";
+import MobileDrawer from "./components/MobileDrawer";
 
+import Login from "./pages/Login";
+import Signup from "./pages/Signup";
+import ForgotPassword from "./pages/ForgetPassword";
+
+const App = () => {
+  const [openPage, setOpenPage] = useState("login");
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [drawerOpen, setDrawerOpen] = useState(false);
+
+  const handleLogin = () => {
+    setIsLoggedIn(true);
+  };
+
+  const handleMenuClick = () => {
+    setDrawerOpen(true);
+  };
+
+  // Show authentication pages before login
+  if (!isLoggedIn) {
+    if (openPage === "login") {
+      return <Login handleClick={setOpenPage} onLogin={handleLogin} />;
+    }
+
+    if (openPage === "signup") {
+      return <Signup setOpenPage={setOpenPage} />;
+    }
+
+    if (openPage === "forgetps") {
+      return <ForgotPassword setOpenPage={setOpenPage} />;
+    }
+  }
+
+  // Show main application after successful login
   return (
     <>
-      <section id="center">
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
-        </div>
-        <div>
-          <h1>Get started</h1>
-          <p>
-            Edit <code>src/App.jsx</code> and save to test <code>HMR</code>
-          </p>
-        </div>
-        <button
-          type="button"
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
-        >
-          Count is {count}
-        </button>
-      </section>
+      <Navbar onMenuClick={handleMenuClick} />
 
-      <div className="ticks"></div>
+      <Box sx={{ display: "flex" }}>
+        <Sidebar />
 
-      <section id="next-steps">
-        <div id="docs">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#documentation-icon"></use>
-          </svg>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
-          <ul>
-            <li>
-              <a href="https://vite.dev/" target="_blank">
-                <img className="logo" src={viteLogo} alt="" />
-                Explore Vite
-              </a>
-            </li>
-            <li>
-              <a href="https://react.dev/" target="_blank">
-                <img className="button-icon" src={reactLogo} alt="" />
-                Learn more
-              </a>
-            </li>
-          </ul>
-        </div>
-        <div id="social">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          <ul>
-            <li>
-              <a href="https://github.com/vitejs/vite" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#github-icon"></use>
-                </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://chat.vite.dev/" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#discord-icon"></use>
-                </svg>
-                Discord
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/vite_js" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#x-icon"></use>
-                </svg>
-                X.com
-              </a>
-            </li>
-            <li>
-              <a href="https://bsky.app/profile/vite.dev" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
-                Bluesky
-              </a>
-            </li>
-          </ul>
-        </div>
-      </section>
+        <Box sx={{ flex: 1 }}>
+          <Container sx={{ py: 3 }}>
+            <Typography variant="h5">Welcome to TaskFlow</Typography>
 
-      <div className="ticks"></div>
-      <section id="spacer"></section>
+            <Typography variant="body1">
+              Your personal task management application.
+            </Typography>
+
+            <Stack
+              direction={{ xs: "column", sm: "row" }}
+              spacing={2}
+              sx={{ mt: 2 }}
+            >
+              <Button variant="contained">Add Tasks</Button>
+
+              <Button variant="outlined">View Tasks</Button>
+            </Stack>
+          </Container>
+        </Box>
+      </Box>
+
+      <MobileDrawer open={drawerOpen} onClose={() => setDrawerOpen(false)} />
     </>
-  )
-}
+  );
+};
 
-export default App
+export default App;
