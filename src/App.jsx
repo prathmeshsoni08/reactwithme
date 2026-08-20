@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 
 import Login from "./pages/Login";
@@ -8,9 +8,12 @@ import ForgotPassword from "./pages/ForgetPassword";
 import Dashboard from "./pages/Dashboard";
 import Tasks from "./pages/Tasks";
 import Profile from "./pages/Profile";
-import MainLayout from "./components/MainLayout";
 import Menu from "./pages/Menu";
 import Completed from "./pages/Completed";
+
+import MainLayout from "./components/MainLayout";
+import ProtectedRoute from "./components/ProtectedRoute";
+
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
@@ -20,33 +23,64 @@ const App = () => {
 
   return (
     <Routes>
-      {/* Authentication */}
-      {!isLoggedIn && (
-        <>
-          <Route path="/login" element={<Login onLogin={handleLogin} />} />
+      {/* Public routes */}
 
-          <Route path="/signup" element={<Signup />} />
+      <Route path="/login" element={<Login onLogin={handleLogin} />} />
 
-          <Route path="/forgotPassword" element={<ForgotPassword />} />
-        </>
-      )}
+      <Route path="/signup" element={<Signup />} />
 
-      {/* Main Application */}
-      {isLoggedIn && (
-        <Route element={<MainLayout />}>
-          <Route path="/dashboard" element={<Dashboard />} />
+      <Route path="/forgotPassword" element={<ForgotPassword />} />
 
-          <Route path="/task" element={<Tasks />} />
+      {/* Protected application routes */}
 
-          <Route path="/profile" element={<Profile />} />
-          <Route path="/menu" element={<Menu />} />
-          <Route path="/completed" element={<Completed />} />
+      <Route element={<MainLayout />}>
+        <Route
+          path="/dashboard"
+          element={
+            <ProtectedRoute isLoggedIn={isLoggedIn}>
+              <Dashboard />
+            </ProtectedRoute>
+          }
+        />
 
-          <Route path="*" element={<Navigate to="/dashboard" replace />} />
-        </Route>
-      )}
+        <Route
+          path="/task"
+          element={
+            <ProtectedRoute isLoggedIn={isLoggedIn}>
+              <Tasks />
+            </ProtectedRoute>
+          }
+        />
 
-      {/* Default route */}
+        <Route
+          path="/profile"
+          element={
+            <ProtectedRoute isLoggedIn={isLoggedIn}>
+              <Profile />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/menu"
+          element={
+            <ProtectedRoute isLoggedIn={isLoggedIn}>
+              <Menu />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/completed"
+          element={
+            <ProtectedRoute isLoggedIn={isLoggedIn}>
+              <Completed />
+            </ProtectedRoute>
+          }
+        />
+      </Route>
+
+      {/* Unknown URL */}
       <Route path="*" element={<Navigate to="/login" replace />} />
     </Routes>
   );

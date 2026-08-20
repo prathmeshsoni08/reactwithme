@@ -12,9 +12,11 @@ import InputAdornment from "@mui/material/InputAdornment";
 import IconButton from "@mui/material/IconButton";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import loginSchema from "../schemas/loginSchema";
 
 function Login({ onLogin }) {
+  const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -31,30 +33,21 @@ function Login({ onLogin }) {
     setPasswordError("");
     setLoginError("");
 
-    let isValid = true;
+    const result = loginSchema.safeParse({
+      email,
+      password,
+    });
 
-    // Email validation
-    if (!email) {
-      setEmailError("Email is required");
-      isValid = false;
-    } else if (!/\S+@\S+\.\S+/.test(email)) {
-      setEmailError("Please enter a valid email address");
-      isValid = false;
-    }
+    if (!result.success) {
+      const errors = result.error.flatten().fieldErrors;
 
-    // Password validation
-    if (!password) {
-      setPasswordError("Password is required");
-      isValid = false;
-    } else if (password.length < 6) {
-      setPasswordError("Password must be at least 6 characters");
-      isValid = false;
-    }
+      setEmailError(errors.email?.[0] || "");
+      setPasswordError(errors.password?.[0] || "");
 
-    // Stop if form validation fails
-    if (!isValid) {
       return;
     }
+
+    const { email: validatedEmail, password: validatedPassword } = result.data;
 
     // Hardcoded login credentials
     const correctEmail = "prathmeshsoni810@gmail.com";
@@ -63,6 +56,7 @@ function Login({ onLogin }) {
     // Check credentials
     if (email === correctEmail && password === correctPassword) {
       onLogin();
+      navigate("/dashboard");
     } else {
       setLoginError("Invalid email or password");
     }
